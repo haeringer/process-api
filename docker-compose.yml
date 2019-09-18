@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    volumes:
+      - type: bind
+        source: ./app
+        target: /opt/system-api
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    command: flask run --host=0.0.0.0
