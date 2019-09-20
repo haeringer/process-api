@@ -49,19 +49,7 @@ Run the playbook `deployment.yml`, providing your target host address (don't omi
     cd /opt/process-api
     python3 -m venv venv
     . venv/bin/activate
-    pip3 install -r app/requirements.txt
-
-dev server:
-
-    python3 main.py
-
-gunicorn test:
-
-    gunicorn main:app -b 0.0.0.0:5000
-
-prod server:
-
-    systemctl start process-api.service
+    pip3 install -r requirements.txt
 
 
 ## Management of the Process-API Gunicorn service
