@@ -18,7 +18,7 @@ def client():
 
 def test_api_root(client):
     response = client.get('/')
-    assert b'processes_url' in response.data
+    assert b'/processes' in response.data
 
 
 def test_processes(client):

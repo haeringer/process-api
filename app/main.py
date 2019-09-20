@@ -3,6 +3,7 @@ import psutil
 
 from flask import Flask
 
+from flask import Flask, jsonify, url_for
 app = Flask(__name__)
 
 
@@ -10,8 +11,9 @@ app = Flask(__name__)
 def api_root():
     """Show available endpoints."""
 
+    processes_url = url_for('processes', _external=True)
     return {
-        'processes_url': 'http://<insert domain here>/processes',  # TODO
+        'processes_url': processes_url,
     }
 
 
