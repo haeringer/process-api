@@ -1,3 +1,4 @@
+import os
 import psutil
 
 from flask import Flask
@@ -10,7 +11,7 @@ def api_root():
     """Show available endpoints."""
 
     return {
-        'processes_url': 'https://<insert domain here>/processes',  # TODO
+        'processes_url': 'http://<insert domain here>/processes',  # TODO
     }
 
 
@@ -19,6 +20,8 @@ def processes():
     """List all processes running on the host system."""
 
     processes = {}
+    pgid_current = os.getpgid(0)
+
     for proc in psutil.process_iter():
         try:
             pinfo = proc.as_dict(attrs=[
@@ -27,7 +30,9 @@ def processes():
         except psutil.NoSuchProcess:
             pass
         else:
-            processes[pinfo['name']] = pinfo
+            pgid = os.getpgid(pinfo['pid'])
+            if not pgid == pgid_current:
+                processes[pinfo['name']] = pinfo
 
     return processes
 

@@ -1,5 +1,5 @@
 import pytest
-
+import os
 import main
 
 
@@ -23,4 +23,11 @@ def test_api_root(client):
 
 def test_processes(client):
     response = client.get('/processes')
-    assert b'PID' in response.data
+    assert b'pid' in response.data
+
+
+def test_own_process_not_in_results(client):
+    pid_current = os.getpid()
+    response = client.get('/processes')
+    response_str = response.data.decode("utf-8")
+    assert '"pid": {},'.format(str(pid_current)) not in response_str
