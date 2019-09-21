@@ -18,46 +18,18 @@
     apt:
       force_apt_get: yes
       update_cache: yes
-      name:
-    with_items:
-    - python3-pip
-    - python3-venv
-
-  - name: Add process-api user
-    user:
-      name: process-api
-      group: process-api
-
-  - name: Set environment variables
-    lineinfile:
-      path: /home/process-api/.bashrc
-      line: "{{ item }}"
-    with_items:
-    - export FLASK_APP=main.py
-    - export FLASK_ENV=development
+      name: ["python3-pip", "python3-venv"]
 
   - name: Checkout Process-API Git repository
     git:
-      repo: https://github.com/haeringer/process-api.git
+      repo: https://github.com/ep-process-api/process-api.git
       dest: /opt/process-api
 
-  - name: Change ownership of application directory
-    file:
-      path: /opt/process-api/
-      state: directory
-      recurse: yes
-      owner: process-api
-      group: process-api
-
-  - name: Create Python virtual environment
-    command: python3 -m venv venv
-    become_user: process-api
-    args:
-      chdir: /opt/process-api/
-
-  - name: Activate Python virtual environment and install Python dependencies
-    shell: . venv/bin/activate && pip3 install -r requirements.txt
-    become_user: process-api
+  - name: Create & activate Python virtual environment + install dependencies
+    shell: "{{ item }}"
+    with_items:
+      - python3 -m venv venv
+      - . venv/bin/activate && pip3 install -r requirements.txt
     args:
       chdir: /opt/process-api/
 

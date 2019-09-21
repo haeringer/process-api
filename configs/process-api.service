@@ -5,18 +5,15 @@ After=network.target
 [Service]
 PermissionsStartOnly=true
 Restart=on-failure
-PIDFile = /run/process-api/process-api.pid
-User=process-api
-Group=process-api
+PIDFile = /run/process-api.pid
 WorkingDirectory=/opt/process-api/app
-ExecStartPre = /bin/mkdir /run/process-api
-ExecStartPre = /bin/chown -R process-api:process-api /run/process-api
 ExecStart = /opt/process-api/venv/bin/gunicorn main:app \
             --bind 0.0.0.0:8000 \
-            --pid /run/process-api/process-api.pid
+            --pid /run/process-api.pid \
+            --log-file /var/log/process-api.log
 ExecReload = /bin/kill -s HUP $MAINPID
 ExecStop = /bin/kill -s TERM $MAINPID
-ExecStopPost = /bin/rm -rf /run/process-api
+ExecStopPost = /bin/rm -rf /run/process-api.pid
 PrivateTmp = true
 
 [Install]
