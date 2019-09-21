@@ -5,7 +5,7 @@ import psutil
 def dict_to_list(dict_):
     """
     Takes an unnested dictionary and turns it into a list,
-    containing the key-value pairs in list format too.
+    containing the key-value pairs also in list format.
     """
 
     list_ = []
@@ -16,6 +16,24 @@ def dict_to_list(dict_):
         return list_
     except AttributeError:
         return None
+
+
+def format_process_dict(pinfo):
+    """
+    Takes the dictionary from psutils' as_dict() function
+    and formats it for better readability.
+    """
+
+    environ_list = dict_to_list(pinfo['environ'])
+
+    pinfo_formatted = {
+        'Name': pinfo['name'],
+        'PID': pinfo['pid'],
+        'PPID': pinfo['ppid'],
+        'Environment': environ_list,
+        'Command': pinfo['cmdline'],
+    }
+    return pinfo_formatted
 
 
 def get_processes():
@@ -37,15 +55,7 @@ def get_processes():
             pass
         else:
             if pgid != pgid_current:
-                environ_list = dict_to_list(pinfo['environ'])
-
-                pinfo_formatted = {
-                    'Name': pinfo['name'],
-                    'PID': pinfo['pid'],
-                    'PPID': pinfo['ppid'],
-                    'Environment': environ_list,
-                    'Command': pinfo['cmdline'],
-                }
-                processes.append(pinfo_formatted)
+                process = format_process_dict(pinfo)
+                processes.append(process)
 
     return processes
