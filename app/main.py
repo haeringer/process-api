@@ -1,7 +1,4 @@
-import os
-import psutil
-
-from flask import Flask
+import utils
 
 from flask import Flask, jsonify, url_for
 app = Flask(__name__)
@@ -19,24 +16,10 @@ def api_root():
 
 @app.route('/processes')
 def processes():
-    """List all processes running on the host system."""
+    """List host processes in JSON."""
 
-    processes = {}
-    pgid_current = os.getpgid(0)
-
-    for proc in psutil.process_iter():
-        try:
-            pinfo = proc.as_dict(attrs=[
-                'name', 'pid', 'ppid', 'environ', 'cmdline',
-            ])
-        except psutil.NoSuchProcess:
-            pass
-        else:
-            pgid = os.getpgid(pinfo['pid'])
-            if not pgid == pgid_current:
-                processes[pinfo['name']] = pinfo
-
-    return processes
+    processes = utils.get_processes()
+    return jsonify(processes)
 
 
 if __name__ == '__main__':
