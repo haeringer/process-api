@@ -7,7 +7,7 @@ PermissionsStartOnly=true
 Restart=on-failure
 PIDFile = /run/process-api.pid
 WorkingDirectory=/opt/process-api/app
-ExecStart = /opt/process-api/venv/bin/gunicorn main:app \
+ExecStart = /opt/process-api/.venv/bin/gunicorn main:app \
             --bind 0.0.0.0:8000 \
             --pid /run/process-api.pid \
             --log-file /var/log/process-api.log
