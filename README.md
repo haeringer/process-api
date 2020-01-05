@@ -1,5 +1,5 @@
 # Process-API
-[![Build Status](https://travis-ci.org/ep-process-api/process-api.svg?branch=master)](https://travis-ci.org/ep-process-api/process-api)
+[![Build Status](https://travis-ci.org/haeringer/process-api.svg?branch=master)](https://travis-ci.org/haeringer/process-api)
 
 - Provides an HTTP endpoint `/processes`, listing the processes running on the host system in JSON format
 - Included process information:

@@ -22,7 +22,7 @@
 
   - name: Checkout Process-API Git repository
     git:
-      repo: https://github.com/ep-process-api/process-api.git
+      repo: https://github.com/haeringer/process-api.git
       dest: /opt/process-api
 
   - name: Create & activate Python virtual environment + install dependencies
